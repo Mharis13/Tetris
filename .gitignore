@@ -1,0 +1,50 @@
+# --- BACKEND (Python) ---
+# Entornos virtuales
+backend/venv/
+backend/env/
+backend/.venv/
+backend/bin/
+
+# Cache de Python
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# Variables de entorno y secretos
+backend/.env
+backend/*.env
+
+# FastAPI / Uvicorn
+backend/.fastapi/
+
+
+# --- FRONTEND (React/Vite) ---
+# Dependencias (esta es la más importante, nunca subas node_modules)
+frontend/node_modules/
+
+# Compilaciones
+frontend/dist/
+frontend/build/
+
+# Logs de error
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Variables de entorno de React
+frontend/.env
+frontend/.env.local
+
+
+# --- IDEs Y SISTEMA ---
+# WebStorm / JetBrains
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
