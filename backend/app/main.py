@@ -57,7 +57,7 @@ async def move_piece(direction: str):
         game.move(0, 1)
     elif direction == "down":
         game.move(1, 0)
-    # elif direction == "rotate":
-    #    game.rotate() # Lo implementaremos en Piece.py
+    elif direction == "rotate":
+        game.rotate()  # Lo ismplementaremos en Piece.py
 
     return {"status": "ok"}

@@ -25,3 +25,7 @@
 @keyframes blink {
   50% { opacity: 0; }
 }
+::-webkit-scrollbar {
+    display: none;
+}
+

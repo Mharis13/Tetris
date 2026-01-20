@@ -15,12 +15,19 @@ class TetrisEngine:
     def _spawn_piece(self):
         """Crea una nueva pieza aleatoria en la parte superior central."""
         # Aquí defines tus formas. Ejemplo simple: una L
-        shapes = [
-            [[1, 1], [1, 1]],  # Cuadrado
-        ]
-        shape = random.choice(shapes)
+        shapes = {
+            "O": [[1, 1], [1, 1]],  # Cuadrado
+            "I": [[1, 1, 1, 1]],  # Linea
+            "T": [[0, 1, 0], [1, 1, 1]],  # T
+            "L": [[1, 0], [1, 0], [1, 1]],  # L,
+            "J": [[0, 1], [0, 1], [1, 1]],  # J
+            "Z": [[0, 1, 1], [1, 1, 0]],  # Z
+            "S": [[1, 1, 0], [0, 1, 1]],
+        }
+        name = random.choice(list(shapes.keys()))
+        shape = shapes[name]
         # La pieza empieza en la fila 0, columna central (4)
-        return Piece(grid=shape, position=[0, 4])
+        return Piece(grid=shape, position=[0, 4], name=name)
 
     def update(self):
         """Lógica de caída automática (Gravedad)."""
@@ -30,7 +37,7 @@ class TetrisEngine:
         # Intentamos mover hacia abajo (1 fila hacia abajo, 0 columnas lateral)
         if not self.move(1, 0):
             # Si NO pudo moverse hacia abajo, hay colisión (suelo o pieza)
-            self.board.lock_piece(self.current_piece)
+            self.board.lock_piece(self.current_piece, self.current_piece.color_id)
 
             # Limpiar líneas y sumar puntos (opcional por ahora)
             # self.score += self.board.clear_lines()
@@ -58,6 +65,18 @@ class TetrisEngine:
 
         return True
 
+    def rotate(self):
+        if self.current_piece.name == "O":
+            return
+        old_piece_grip = self.current_piece.grid
+        self.current_piece.grid = [
+            list(row) for row in zip(*self.current_piece.grid[::-1])
+        ]
+        if self.board.is_collision(self.current_piece):
+            self.current_piece.grid = old_piece_grip
+            return
+        return
+
     def get_display_grid(self):
         """
         Une el tablero fijo con la pieza que está cayendo
@@ -76,6 +95,6 @@ class TetrisEngine:
                     # Verificamos que esté dentro de los límites antes de pintar
                     # (esto evita errores visuales al spawnear)
                     if 0 <= board_r < self.rows and 0 <= board_c < self.cols:
-                        grid_copy[board_r][board_c] = 2
+                        grid_copy[board_r][board_c] = self.current_piece.color_id
 
         return grid_copy

@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Board:
     """Represents the Tetris board."""
 
@@ -8,7 +11,7 @@ class Board:
         # Renombramos self.board a self.grid para consistencia con el Engine
         self.grid = [[0 for _ in range(cols)] for _ in range(rows)]
 
-    def lock_piece(self, piece):
+    def lock_piece(self, piece, color_id):
         """
         Fija la pieza en el tablero convirtiendo sus bloques en '1' permanentes.
         Se llama cuando la pieza ya no puede bajar más.
@@ -21,7 +24,7 @@ class Board:
 
                     # Verificamos que esté dentro de los límites antes de fijar
                     if 0 <= board_row < self.rows and 0 <= board_col < self.cols:
-                        self.grid[board_row][board_col] = 1
+                        self.grid[board_row][board_col] = color_id
 
         # Inmediatamente después de fijar, revisamos si se completaron líneas
         return self.remove_completed_lines()

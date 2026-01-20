@@ -3,12 +3,15 @@ import './App.css'
 
 // Colores para el tablero
 const COLORS: { [key: number]: string } = {
-  0: '#1a1a1a', // Vacío
-  1: '#3498db', // Fijo (Azul)
-  2: '#e74c3c', // Activo (Rojo)
-};
-
-function App() {
+  0: '#1a1a1a', // Fondo
+  3: '#FF0000', // Rojo
+  4: '#00FF00', // Verde
+  5: '#0000FF', // Azul
+  6: '#FFFF00', // Amarillo
+  7: '#FF00FF', // Magenta
+  8: '#00FFFF', // Cian
+  9: '#FFA500', // Naranja
+};function App() {
   const [grid, setGrid] = useState<number[][]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
@@ -34,10 +37,17 @@ function App() {
   // 2. TECLADO: Enviar movimientos al Backend
   useEffect(() => {
     const handleKeyDown = async (e: KeyboardEvent) => {
+      const keysToBlock = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
+
+    if (keysToBlock.includes(e.key)) {
+      e.preventDefault(); // <-- ESTA ES LA LÍNEA MÁGICA
+    }
+
       let direction = "";
       if (e.key === "ArrowLeft") direction = "left";
       if (e.key === "ArrowRight") direction = "right";
       if (e.key === "ArrowDown") direction = "down";
+      if (e.key === "ArrowUp") direction = 'rotate'
 
       if (direction && !gameOver) {
         await fetch(`http://127.0.0.1:8000/move/${direction}`, { method: 'POST' });
@@ -54,7 +64,7 @@ function App() {
 
   return (
     <div className="game-container">
-      <h1>Tetris Aegis Stack</h1>
+      <h1>Tetris Game</h1>
       <div className="status-bar">
         <h2>Score: {score}</h2>
         {gameOver && <h2 className="game-over">¡GAME OVER!</h2>}
